@@ -31,3 +31,12 @@ if (fs.existsSync(srcRule) && !fs.existsSync(destRule)) {
   fs.mkdirSync(destRules, { recursive: true });
   fs.copyFileSync(srcRule, destRule);
 }
+
+// Add @rules/03-development.md to ~/.claude/CLAUDE.md if not present
+const claudeMdPath = path.join(homeDir, '.claude', 'CLAUDE.md');
+const ruleRef = '@rules/03-development.md';
+let claudeMd = fs.existsSync(claudeMdPath) ? fs.readFileSync(claudeMdPath, 'utf8') : '';
+if (!claudeMd.includes(ruleRef)) {
+  claudeMd = claudeMd.trimEnd() + '\n' + ruleRef + '\n';
+  fs.writeFileSync(claudeMdPath, claudeMd);
+}
