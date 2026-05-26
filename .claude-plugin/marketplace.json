@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "dev-workflow",
+  "description": "Claude Code 開発ワークフロープラグイン。新規プロジェクトのセットアップを /dev-setup 一発で完結させる。",
+  "owner": {
+    "name": "kobayashiyuuhi",
+    "url": "https://github.com/kobayashiyuuhi"
+  },
+  "plugins": [
+    {
+      "name": "dev-workflow",
+      "description": "/dev-setup と /verify-setup で開発環境を一括セットアップ。git・GitHub・PR自動レビュー・タスクフックまで。",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

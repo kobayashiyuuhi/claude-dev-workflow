@@ -1,23 +1,21 @@
-$ErrorActionPreference = "Stop"
+node -e @"
+const fs = require('fs');
+const path = require('path');
+const settingsPath = path.join(process.env.HOME || process.env.USERPROFILE, '.claude', 'settings.json');
 
-$dest = "$env:USERPROFILE\.claude"
-$src  = "$PSScriptRoot\.claude"
+let settings = {};
+if (fs.existsSync(settingsPath)) {
+  settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+}
 
-Write-Host "Installing claude-dev-workflow plugin..."
+settings.extraKnownMarketplaces = settings.extraKnownMarketplaces || {};
+settings.extraKnownMarketplaces['dev-workflow'] = {
+  source: { source: 'github', repo: 'kobayashiyuuhi/claude-dev-workflow' }
+};
 
-New-Item -ItemType Directory -Force -Path "$dest\skills\dev-setup\templates" | Out-Null
-New-Item -ItemType Directory -Force -Path "$dest\rules" | Out-Null
+settings.enabledPlugins = settings.enabledPlugins || {};
+settings.enabledPlugins['dev-workflow@dev-workflow'] = true;
 
-Copy-Item "$src\skills\dev-setup.md"    "$dest\skills\dev-setup.md"    -Force
-Copy-Item "$src\skills\verify-setup.md" "$dest\skills\verify-setup.md" -Force
-Copy-Item "$src\skills\dev-setup\templates\*" "$dest\skills\dev-setup\templates\" -Recurse -Force
-Copy-Item "$src\rules\03-development.md" "$dest\rules\03-development.md" -Force
-
-Write-Host ""
-Write-Host "Done!"
-Write-Host ""
-Write-Host "Add the following line to ~/.claude/CLAUDE.md:"
-Write-Host ""
-Write-Host "  @rules/03-development.md"
-Write-Host ""
-Write-Host "Then use /dev-setup in any Claude Code project."
+fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+console.log('Done! Restart Claude Code to activate the plugin.');
+"@

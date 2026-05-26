@@ -1,0 +1,23 @@
+{
+  "name": "dev-workflow",
+  "version": "1.0.0",
+  "description": "Claude Code 開発ワークフロープラグイン。/dev-setup と /verify-setup で新規プロジェクトを一括セットアップする。",
+  "author": {
+    "name": "kobayashiyuuhi",
+    "url": "https://github.com/kobayashiyuuhi"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/sync-templates.js\"",
+            "timeout": 10,
+            "statusMessage": "dev-workflow: テンプレート同期中..."
+          }
+        ]
+      }
+    ]
+  }
+}
