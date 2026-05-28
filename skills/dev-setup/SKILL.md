@@ -201,7 +201,8 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 
 #### Windows での Stop フック注意点
 
-- `shell: "powershell"` + `Set-Location 'path'` を使う
+- `shell: "powershell"` + `& 'C:/Program Files/Git/usr/bin/bash.exe' 'script.sh'` 形式を使う
+- `shell` 指定なし、または bash.exe を直接コマンド文字列にダブルクォートで埋め込む形式は `cannot execute binary file` エラーになる
 - JSON 出力: `{"systemMessage": "メッセージ"}` または `{"continue": true, "stopReason": "理由"}`
 
 ### ステップ7b: 検証機構（Stopフック）のセットアップ
