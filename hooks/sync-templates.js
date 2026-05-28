@@ -40,3 +40,4 @@ if (!claudeMd.includes(ruleRef)) {
   claudeMd = claudeMd.trimEnd() + '\n' + ruleRef + '\n';
   fs.writeFileSync(claudeMdPath, claudeMd);
 }
+
