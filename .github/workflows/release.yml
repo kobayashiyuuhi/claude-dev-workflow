@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate plugin
+        run: |
+          node .github/scripts/validate-plugin.js
+          node .github/scripts/check-skills.js
+
+      - name: Bump version
+        run: node .github/scripts/bump-version.js
+
+      - name: Read new version
+        id: version
+        run: echo "version=$(node -p "require('./.claude-plugin/plugin.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Commit and tag
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .claude-plugin/plugin.json
+          git commit -m "chore(release): v${{ steps.version.outputs.version }}"
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin main --follow-tags
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --generate-notes \
+            --latest \
+            --title "v${{ steps.version.outputs.version }}"
