@@ -1,6 +1,6 @@
 {
   "name": "dev-workflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code 開発ワークフロープラグイン。/dev-setup・/verify-setup・/setup-log-collection で新規プロジェクトを一括セットアップする。",
   "author": {
     "name": "kobayashiyuuhi",
