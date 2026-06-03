@@ -23,11 +23,11 @@ const srcTemplates = path.join(pluginRoot, 'templates');
 const destTemplates = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'templates');
 copyDir(srcTemplates, destTemplates);
 
-// Sync rules/03-development.md to ~/.claude/rules/
+// Sync rules/03-development.md to ~/.claude/rules/ (always overwrite to propagate updates)
 const srcRule = path.join(pluginRoot, 'rules', 'development.md');
 const destRules = path.join(homeDir, '.claude', 'rules');
 const destRule = path.join(destRules, '03-development.md');
-if (fs.existsSync(srcRule) && !fs.existsSync(destRule)) {
+if (fs.existsSync(srcRule)) {
     fs.mkdirSync(destRules, { recursive: true });
     fs.copyFileSync(srcRule, destRule);
 }
