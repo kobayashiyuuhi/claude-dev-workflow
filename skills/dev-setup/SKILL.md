@@ -209,6 +209,14 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 
 技術スタック確定済みなら `/verify-setup` を実行。未定なら仕様確定後・実装開始前に実行。
 
+### ステップ7c: セッションログ基盤のセットアップ
+
+`dev-log-setup` スキルを実行して、セッションログの自動保存基盤を整備する。
+
+- `~/.claude/Log/` フォルダ作成
+- `stop_save_log.sh` / `log_generator.py` を `~/.claude/hooks/` に配置
+- `~/.claude/settings.json` の `Stop` フックに登録（未登録の場合）
+
 ### ステップ8: 完了メッセージ
 
 ---
