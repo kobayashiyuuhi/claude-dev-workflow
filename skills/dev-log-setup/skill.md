@@ -50,7 +50,7 @@ fi
 
 ### ステップ3: settings.json へのフック登録
 
-`~/.claude/settings.json` の `hooks.Stop` 配列に以下エントリが**なければ**追加する。
+プロジェクトの `.claude/settings.json` の `hooks.Stop` 配列に以下エントリが**なければ**追加する。
 既に `stop_save_log.sh` への参照がある場合はスキップ。
 
 追加するエントリ（`Stop` 配列の末尾に追記）：
@@ -83,7 +83,8 @@ fi
 }
 ```
 
-`~/.claude/settings.json` を Read して現在の Stop 配列を確認し、Edit で追記する。
+プロジェクトルートの `.claude/settings.json` を Read して現在の Stop 配列を確認し、Edit で追記する。
+ファイルが存在しない場合は新規作成する。グローバルの `~/.claude/settings.json` は変更しない。
 
 ### ステップ3b: .gitignore への追記
 
