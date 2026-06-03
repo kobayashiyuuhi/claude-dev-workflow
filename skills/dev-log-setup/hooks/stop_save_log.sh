@@ -5,8 +5,12 @@ INPUT=$(cat)
 [ -z "$INPUT" ] && exit 0
 
 PY_CMD=""
-command -v python3 &>/dev/null && PY_CMD="python3"
-[ -z "$PY_CMD" ] && command -v python &>/dev/null && PY_CMD="python"
+for _py in python3 python; do
+    if command -v "$_py" &>/dev/null && "$_py" -c "import sys" &>/dev/null 2>&1; then
+        PY_CMD="$_py"
+        break
+    fi
+done
 [ -z "$PY_CMD" ] && exit 0
 
 SESSION_ID=$(echo "$INPUT" | $PY_CMD -c "import sys,json; d=json.load(sys.stdin); print(d.get('session_id',''))" 2>/dev/null)

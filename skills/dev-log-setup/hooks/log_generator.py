@@ -5,6 +5,9 @@ import sys
 import os
 from datetime import datetime
 
+# Force UTF-8 output regardless of terminal/OS locale
+sys.stdout = open(sys.stdout.fileno(), mode='w', encoding='utf-8', errors='replace', closefd=False)
+
 
 def main():
     transcript_path = sys.argv[1] if len(sys.argv) > 1 else ''

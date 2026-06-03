@@ -85,6 +85,15 @@ fi
 
 `~/.claude/settings.json` を Read して現在の Stop 配列を確認し、Edit で追記する。
 
+### ステップ3b: .gitignore への追記
+
+`.gitignore` に `.claude/Log/` が含まれていなければ追記する。
+
+```bash
+grep -q '\.claude/Log' .gitignore 2>/dev/null \
+  || echo -e "\n# Session logs (auto-generated)\n.claude/Log/" >> .gitignore
+```
+
 ### ステップ4: 完了確認
 
 ```
