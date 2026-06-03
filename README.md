@@ -2,6 +2,9 @@
 
 Claude Code 向け開発ワークフロープラグイン。新規プロジェクトのセットアップを `/dev-setup` 一発で完結させる。
 
+# CLAUDE.md
+@rules/development.md
+
 ---
 
 ## 提供スキル
