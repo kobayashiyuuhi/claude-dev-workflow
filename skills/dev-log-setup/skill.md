@@ -1,7 +1,7 @@
 ---
 name: dev-log-setup
 description: >
-  セッションログ基盤をセットアップするスキル。~/.claude/Log/ フォルダ作成・Stopフックスクリプト配置・settings.json へのフック登録を行う。
+  セッションログ基盤をセットアップするスキル。プロジェクトの .claude/Log/ フォルダ作成・.claude/hooks/ へのスクリプト配置・.claude/settings.json へのフック登録を行う。すべてプロジェクト固有。グローバル設定は変更しない。
   /dev-log-setup と呼び出されたとき、または dev-setup から自動実行される。
 ---
 
@@ -31,11 +31,13 @@ mkdir -p ".claude/Log"
 
 ### ステップ2: フックスクリプトのコピー
 
-スキルの `hooks/` ディレクトリからグローバルフックフォルダへコピー。
+スキルの `hooks/` ディレクトリからプロジェクトの `.claude/hooks/` へコピー。
 
 ```bash
 SKILL_DIR="$HOME/.claude/skills/dev-log-setup/hooks"
-HOOK_DIR="$HOME/.claude/hooks"
+HOOK_DIR=".claude/hooks"
+
+mkdir -p "$HOOK_DIR"
 
 # スクリプトが存在する場合のみコピー
 if [ -d "$SKILL_DIR" ]; then
@@ -53,14 +55,19 @@ fi
 プロジェクトの `.claude/settings.json` の `hooks.Stop` 配列に以下エントリが**なければ**追加する。
 既に `stop_save_log.sh` への参照がある場合はスキップ。
 
+`cwd` は Stop フック実行時の環境変数から取得できないため、スクリプトパスはプロジェクトからの相対パスではなく絶対パスで記述する必要がある。
+現在の作業ディレクトリ（`pwd`）を取得してパスを組み立てる。
+
 追加するエントリ（`Stop` 配列の末尾に追記）：
+
+**Windows の場合：** `pwd` で得たパスを使い絶対パスで記述
 
 ```json
 {
   "hooks": [
     {
       "type": "command",
-      "command": "\"C:/Program Files/Git/usr/bin/bash.exe\" C:/Users/kobay/.claude/hooks/stop_save_log.sh",
+      "command": "\"C:/Program Files/Git/usr/bin/bash.exe\" \"{CWD}/.claude/hooks/stop_save_log.sh\"",
       "timeout": 20,
       "statusMessage": "ログ保存中..."
     }
@@ -75,13 +82,15 @@ fi
   "hooks": [
     {
       "type": "command",
-      "command": "bash ~/.claude/hooks/stop_save_log.sh",
+      "command": "bash \"{CWD}/.claude/hooks/stop_save_log.sh\"",
       "timeout": 20,
       "statusMessage": "ログ保存中..."
     }
   ]
 }
 ```
+
+`{CWD}` は実際の作業ディレクトリ絶対パスに置換すること（例: `I:/myworkSpace/MyProject`）。
 
 プロジェクトルートの `.claude/settings.json` を Read して現在の Stop 配列を確認し、Edit で追記する。
 ファイルが存在しない場合は新規作成する。グローバルの `~/.claude/settings.json` は変更しない。
