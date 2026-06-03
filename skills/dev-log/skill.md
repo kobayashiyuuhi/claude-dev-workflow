@@ -24,29 +24,23 @@ PROJECT=$(basename "$(pwd)")
 
 ### ステップ2: ログファイル検索
 
-```bash
-LOG_DIR="$HOME/.claude/Log"
-
-# 現在プロジェクトの最新5件
-ls -t "$LOG_DIR/" 2>/dev/null | grep "$PROJECT" | head -5
-```
-
-見つからない場合はプロジェクト問わず最新5件を検索：
+プロジェクトの `.claude/Log/` を検索する。
 
 ```bash
+LOG_DIR=".claude/Log"
+
 ls -t "$LOG_DIR/" 2>/dev/null | head -5
 ```
 
 ### ステップ3: ログ選択・読み込み
 
-- 該当ログが1件 → 自動選択
+- 1件 → 自動選択
 - 複数件 → 最新を自動選択（ファイル名のタイムスタンプが日時を示す）
 - 0件 → 「前回ログなし」として終了
 
 ```bash
-LOG_FILE=$(ls -t "$LOG_DIR/" 2>/dev/null | grep "$PROJECT" | head -1)
-[ -z "$LOG_FILE" ] && LOG_FILE=$(ls -t "$LOG_DIR/" 2>/dev/null | head -1)
-[ -n "$LOG_FILE" ] && cat "$LOG_DIR/$LOG_FILE"
+LOG_FILE=$(ls -t ".claude/Log/" 2>/dev/null | head -1)
+[ -n "$LOG_FILE" ] && cat ".claude/Log/$LOG_FILE"
 ```
 
 ### ステップ4: 要約の提示
@@ -75,12 +69,12 @@ LOG_FILE=$(ls -t "$LOG_DIR/" 2>/dev/null | grep "$PROJECT" | head -1)
 
 ```
 前回のセッションログが見つかりませんでした。
-（~/.claude/Log/ にファイルなし、または dev-log-setup 未実行）
+（.claude/Log/ にファイルなし、または dev-log-setup 未実行）
 
 新規セッションとして開始します。
 ```
 
 ## 注意
 
-- `~/.claude/Log/` は `dev-log-setup` スキルが作成する。未実行なら案内する
+- `.claude/Log/` は `dev-log-setup` スキルが作成する。未実行なら案内する
 - ログは Stop フックが自動生成（セッション終了時）。途中終了では生成されないことがある

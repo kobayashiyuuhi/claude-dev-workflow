@@ -1,8 +1,5 @@
 #!/bin/bash
-# Stop hook: Save session log to ~/.claude/Log/
-
-LOG_DIR="$HOME/.claude/Log"
-mkdir -p "$LOG_DIR"
+# Stop hook: Save session log to {project}/.claude/Log/
 
 INPUT=$(cat)
 [ -z "$INPUT" ] && exit 0
@@ -17,6 +14,13 @@ CWD_RAW=$(echo "$INPUT" | $PY_CMD -c "import sys,json; d=json.load(sys.stdin); p
 TRANSCRIPT=$(echo "$INPUT" | $PY_CMD -c "import sys,json; d=json.load(sys.stdin); print(d.get('transcript_path',''))" 2>/dev/null)
 
 [ -z "$SESSION_ID" ] && exit 0
+[ -z "$CWD_RAW" ] && exit 0
+
+# Convert Windows path separators for bash
+CWD_BASH=$(echo "$CWD_RAW" | sed 's|\\|/|g; s|^\([A-Za-z]\):|/\L\1|')
+
+LOG_DIR="${CWD_BASH}/.claude/Log"
+mkdir -p "$LOG_DIR" 2>/dev/null || exit 0
 
 PROJECT=$(basename "$CWD_RAW" 2>/dev/null || echo "unknown")
 DATE=$(date '+%Y-%m-%d-%H%M')
