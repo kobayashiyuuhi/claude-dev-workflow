@@ -13,6 +13,3 @@ Thumbs.db
 
 # Claude Code local settings (personal overrides)
 .claude/settings.local.json
-
-# Session logs (auto-generated, not for version control)
-.claude/Log/
