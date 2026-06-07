@@ -28,8 +28,8 @@ src/
 以下のコマンドでテンプレートを配置する：
 
 ```bash
-TMPL="$HOME/.claude/skills/dev-setup/templates"
-RULES="$HOME/.claude/skills/dev-setup/rules"
+TMPL=".claude/skills/dev-setup/templates"
+RULES=".claude/skills/dev-setup/rules"
 
 # 開発ルール
 mkdir -p .claude/rules

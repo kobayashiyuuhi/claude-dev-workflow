@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const pluginRoot = path.resolve(__dirname, '..');
-const homeDir = process.env.HOME || process.env.USERPROFILE || '';
 
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -18,12 +17,12 @@ function copyDir(src, dest) {
   }
 }
 
-// Sync templates to ~/.claude/skills/dev-setup/templates/
+// Sync templates to .claude/skills/dev-setup/templates/ in the current project
 const srcTemplates = path.join(pluginRoot, 'skills', 'dev-setup', 'templates');
-const destTemplates = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'templates');
+const destTemplates = path.join(process.cwd(), '.claude', 'skills', 'dev-setup', 'templates');
 copyDir(srcTemplates, destTemplates);
 
-// Sync rules to ~/.claude/skills/dev-setup/rules/
+// Sync rules to .claude/skills/dev-setup/rules/ in the current project
 const srcRules = path.join(pluginRoot, 'rules');
-const destRulesCache = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'rules');
+const destRulesCache = path.join(process.cwd(), '.claude', 'skills', 'dev-setup', 'rules');
 copyDir(srcRules, destRulesCache);
