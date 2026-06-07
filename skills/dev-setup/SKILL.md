@@ -29,6 +29,11 @@ src/
 
 ```bash
 TMPL="$HOME/.claude/skills/dev-setup/templates"
+RULES="$HOME/.claude/skills/dev-setup/rules"
+
+# 開発ルール
+mkdir -p .claude/rules
+cp "$RULES/development.md" .claude/rules/development.md
 
 # ドキュメント
 cp "$TMPL/requirements.md"        ./document/requirements.md
@@ -51,6 +56,10 @@ cp "$TMPL/resources-readme.md"    ./resources/README.md
 # ルートファイル
 cp "$TMPL/CLAUDE-md.md"           ./CLAUDE.md
 cp "$TMPL/tasks-md.md"            ./tasks.md
+
+# CLAUDE.md に開発ルール参照を追記
+echo "" >> ./CLAUDE.md
+echo "@.claude/rules/development.md" >> ./CLAUDE.md
 ```
 
 ### ステップ2: .gitignore の作成

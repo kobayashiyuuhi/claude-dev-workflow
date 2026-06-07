@@ -19,24 +19,11 @@ function copyDir(src, dest) {
 }
 
 // Sync templates to ~/.claude/skills/dev-setup/templates/
-const srcTemplates = path.join(pluginRoot, 'templates');
+const srcTemplates = path.join(pluginRoot, 'skills', 'dev-setup', 'templates');
 const destTemplates = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'templates');
 copyDir(srcTemplates, destTemplates);
 
-// Sync rules/development.md to ~/.claude/rules/
-const srcRule = path.join(pluginRoot, 'rules', 'development.md');
-const destRules = path.join(homeDir, '.claude', 'rules');
-const destRule = path.join(destRules, 'development.md');
-if (fs.existsSync(srcRule) && !fs.existsSync(destRule)) {
-  fs.mkdirSync(destRules, { recursive: true });
-  fs.copyFileSync(srcRule, destRule);
-}
-
-// Add @rules/development.md to ~/.claude/CLAUDE.md if not present
-const claudeMdPath = path.join(homeDir, '.claude', 'CLAUDE.md');
-const ruleRef = '@rules/development.md';
-let claudeMd = fs.existsSync(claudeMdPath) ? fs.readFileSync(claudeMdPath, 'utf8') : '';
-if (!claudeMd.includes(ruleRef)) {
-  claudeMd = claudeMd.trimEnd() + '\n' + ruleRef + '\n';
-  fs.writeFileSync(claudeMdPath, claudeMd);
-}
+// Sync rules to ~/.claude/skills/dev-setup/rules/
+const srcRules = path.join(pluginRoot, 'rules');
+const destRulesCache = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'rules');
+copyDir(srcRules, destRulesCache);
