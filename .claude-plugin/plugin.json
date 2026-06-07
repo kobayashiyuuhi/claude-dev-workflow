@@ -1,7 +1,7 @@
 {
   "name": "dev-workflow",
-  "version": "1.0.0",
-  "description": "Claude Code 開発ワークフロープラグイン。/dev-setup・/verify-setup・/setup-log-collection で新規プロジェクトを一括セットアップする。",
+  "version": "1.4.1",
+  "description": "Claude Code 開発ワークフロープラグイン。/dev-setup・/verify-setup で新規プロジェクトを一括セットアップする。/plan-view でPlanModeのプランをHTML出力してブラウザ確認できる。/dev-log-setup でセッションログ自動保存を設定、/dev-log で前回ログを読み込む。",
   "author": {
     "name": "kobayashiyuuhi",
     "url": "https://github.com/kobayashiyuuhi"
