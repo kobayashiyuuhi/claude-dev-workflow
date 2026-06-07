@@ -17,7 +17,8 @@ develop   ← 統合ブランチ
 ## バージョン管理
 
 - `.claude-plugin/plugin.json` の `version` を更新してからリリース
-- main へのマージ = リリース = `chore(release): vX.Y.Z` コミット + タグ
+- main へのマージ = リリース = `chore(release): vX.Y.Z` コミット + タグ + GitHub Release 作成
+- GitHub Release は必ず作成する: `gh release create vX.Y.Z --title "vX.Y.Z" --notes "..." --latest`
 
 ## plugin.json コンフリクト防止
 
