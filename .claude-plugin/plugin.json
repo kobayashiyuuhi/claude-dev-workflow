@@ -12,9 +12,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/sync-templates.js\"",
+            "command": "node -e \"const fs=require('fs');fs.mkdirSync('.claude',{recursive:true});fs.writeFileSync('.claude/.plugin-root','${CLAUDE_PLUGIN_ROOT}');\"",
             "timeout": 10,
-            "statusMessage": "dev-workflow: テンプレート同期中..."
+            "statusMessage": "dev-workflow: ready"
           }
         ]
       }
