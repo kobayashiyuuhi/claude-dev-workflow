@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "& 'C:/Program Files/Git/usr/bin/bash.exe' '.claude/hooks/task_update_check.sh'",
+            "shell": "powershell",
+            "timeout": 10,
+            "statusMessage": "タスク更新確認中..."
+          }
+        ]
+      }
+    ]
+  }
+}
