@@ -1,6 +1,6 @@
 {
   "name": "dev-workflow",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Claude Code 開発ワークフロープラグイン。/dev-setup・/verify-setup で新規プロジェクトを一括セットアップする。/plan-view でPlanModeのプランをHTML出力してブラウザ確認できる。/dev-log-setup でセッションログ自動保存を設定、/dev-log で前回ログを読み込む。",
   "author": {
     "name": "kobayashiyuuhi",
@@ -12,9 +12,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/sync-templates.js\"",
+            "command": "node -e \"const fs=require('fs');fs.mkdirSync('.claude',{recursive:true});fs.writeFileSync('.claude/.plugin-root','${CLAUDE_PLUGIN_ROOT}');\"",
             "timeout": 10,
-            "statusMessage": "dev-workflow: テンプレート同期中..."
+            "statusMessage": "dev-workflow: ready"
           }
         ]
       }

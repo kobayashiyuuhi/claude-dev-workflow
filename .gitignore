@@ -11,5 +11,5 @@ Thumbs.db
 .env
 .env.local
 
-# Claude Code local settings (personal overrides)
-.claude/settings.local.json
+# Claude Code local workspace (generated, not part of plugin)
+.claude/

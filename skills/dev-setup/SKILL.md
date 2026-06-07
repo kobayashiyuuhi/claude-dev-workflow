@@ -6,7 +6,7 @@ description: >
 ---
 
 現在のプロジェクトディレクトリに開発環境を整備するスキルです。
-テンプレートファイルは `.claude/skills/dev-setup/templates/` から cp で配置する（SessionStart フックでプロジェクトに同期済み）。
+テンプレートファイルはプラグインディレクトリ内の `skills/dev-setup/templates/` から cp で配置する（`.claude/.plugin-root` にパスが記録済み）。
 
 ## 手順
 
@@ -28,7 +28,13 @@ src/
 以下のコマンドでテンプレートを配置する：
 
 ```bash
-TMPL=".claude/skills/dev-setup/templates"
+PLUGIN_ROOT=$(cat .claude/.plugin-root)
+TMPL="$PLUGIN_ROOT/skills/dev-setup/templates"
+RULES="$PLUGIN_ROOT/rules"
+
+# 開発ルール
+mkdir -p .claude/rules
+cp "$RULES/development.md" .claude/rules/development.md
 
 # ドキュメント
 cp "$TMPL/requirements.md"        ./document/requirements.md
@@ -51,6 +57,10 @@ cp "$TMPL/resources-readme.md"    ./resources/README.md
 # ルートファイル
 cp "$TMPL/CLAUDE-md.md"           ./CLAUDE.md
 cp "$TMPL/tasks-md.md"            ./tasks.md
+
+# CLAUDE.md に開発ルール参照を追記
+echo "" >> ./CLAUDE.md
+echo "@.claude/rules/development.md" >> ./CLAUDE.md
 ```
 
 ### ステップ2: .gitignore の作成
@@ -184,7 +194,8 @@ PR自動レビュー有効化手順:
 プロジェクトの `.claude/` にタスク更新を強制する Stop フックを配置する：
 
 ```bash
-TMPL=".claude/skills/dev-setup/templates"
+PLUGIN_ROOT=$(cat .claude/.plugin-root)
+TMPL="$PLUGIN_ROOT/skills/dev-setup/templates"
 
 mkdir -p .claude/hooks
 cp "$TMPL/task_update_check.sh" .claude/hooks/task_update_check.sh
