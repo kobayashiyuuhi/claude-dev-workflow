@@ -18,9 +18,9 @@ function copyDir(src, dest) {
     }
 }
 
-// Sync templates to ~/.claude/skills/dev-setup/templates/
-const srcTemplates = path.join(pluginRoot, 'templates');
-const destTemplates = path.join(homeDir, '.claude', 'skills', 'dev-setup', 'templates');
+// Sync templates to .claude/skills/dev-setup/templates/ in the current project
+const srcTemplates = path.join(pluginRoot, 'skills', 'dev-setup', 'templates');
+const destTemplates = path.join(process.cwd(), '.claude', 'skills', 'dev-setup', 'templates');
 copyDir(srcTemplates, destTemplates);
 
 // Sync rules/03-development.md to ~/.claude/rules/ (always overwrite to propagate updates)

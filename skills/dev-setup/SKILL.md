@@ -6,7 +6,7 @@ description: >
 ---
 
 現在のプロジェクトディレクトリに開発環境を整備するスキルです。
-テンプレートファイルは `~/.claude/skills/dev-setup/templates/` から cp で配置する。
+テンプレートファイルは `.claude/skills/dev-setup/templates/` から cp で配置する（SessionStart フックでプロジェクトに同期済み）。
 
 ## 手順
 
@@ -28,7 +28,7 @@ src/
 以下のコマンドでテンプレートを配置する：
 
 ```bash
-TMPL="$HOME/.claude/skills/dev-setup/templates"
+TMPL=".claude/skills/dev-setup/templates"
 
 # ドキュメント
 cp "$TMPL/requirements.md"        ./document/requirements.md
@@ -184,7 +184,7 @@ PR自動レビュー有効化手順:
 プロジェクトの `.claude/` にタスク更新を強制する Stop フックを配置する：
 
 ```bash
-TMPL="$HOME/.claude/skills/dev-setup/templates"
+TMPL=".claude/skills/dev-setup/templates"
 
 mkdir -p .claude/hooks
 cp "$TMPL/task_update_check.sh" .claude/hooks/task_update_check.sh
