@@ -2,6 +2,9 @@
 
 Claude Code 向け開発ワークフロープラグイン。新規プロジェクトのセットアップを `/dev-setup` 一発で完結させる。
 
+# CLAUDE.md
+@rules/development.md
+
 ---
 
 ## 提供スキル
@@ -133,4 +136,4 @@ gh release create vX.Y.Z --title "vX.Y.Z" --notes "..." --latest
 
 ## ライセンス
 
-Private — 個人利用のみ
+MIT

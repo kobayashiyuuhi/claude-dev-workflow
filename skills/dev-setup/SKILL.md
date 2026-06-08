@@ -6,7 +6,7 @@ description: >
 ---
 
 現在のプロジェクトディレクトリに開発環境を整備するスキルです。
-テンプレートファイルはプラグインディレクトリ内の `skills/dev-setup/templates/` から cp で配置する（`.claude/.plugin-root` にパスが記録済み）。
+テンプレートファイルはプラグインディレクトリ内の `skills/dev-setup/templates/` から cp で配置する（`$CLAUDE_PLUGIN_ROOT` でパス解決）。
 
 ## 手順
 
@@ -28,9 +28,8 @@ src/
 以下のコマンドでテンプレートを配置する：
 
 ```bash
-PLUGIN_ROOT=$(cat .claude/.plugin-root)
-TMPL="$PLUGIN_ROOT/skills/dev-setup/templates"
-RULES="$PLUGIN_ROOT/rules"
+TMPL="$CLAUDE_PLUGIN_ROOT/skills/dev-setup/templates"
+RULES="$CLAUDE_PLUGIN_ROOT/rules"
 
 # 開発ルール
 mkdir -p .claude/rules
@@ -194,8 +193,7 @@ PR自動レビュー有効化手順:
 プロジェクトの `.claude/` にタスク更新を強制する Stop フックを配置する：
 
 ```bash
-PLUGIN_ROOT=$(cat .claude/.plugin-root)
-TMPL="$PLUGIN_ROOT/skills/dev-setup/templates"
+TMPL="$CLAUDE_PLUGIN_ROOT/skills/dev-setup/templates"
 
 mkdir -p .claude/hooks
 cp "$TMPL/task_update_check.sh" .claude/hooks/task_update_check.sh
@@ -219,6 +217,13 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 ### ステップ7b: 検証機構（Stopフック）のセットアップ
 
 技術スタック確定済みなら `/verify-setup` を実行。未定なら仕様確定後・実装開始前に実行。
+
+### ステップ7c: セッションログ基盤のセットアップ
+
+`dev-log-setup` スキルを実行して、セッションログの自動保存基盤を整備する。
+
+- `stop_save_log.sh` / `log_generator.py` をプロジェクトの `.claude/hooks/` に配置
+- プロジェクトの `.claude/settings.json` の `Stop` フックに登録（未登録の場合）
 
 ### ステップ8: 完了メッセージ
 
