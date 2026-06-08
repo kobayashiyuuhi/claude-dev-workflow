@@ -5,19 +5,5 @@
   "author": {
     "name": "kobayashiyuuhi",
     "url": "https://github.com/kobayashiyuuhi"
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node -e \"const fs=require('fs');fs.mkdirSync('.claude',{recursive:true});fs.writeFileSync('.claude/.plugin-root','${CLAUDE_PLUGIN_ROOT}');\"",
-            "timeout": 10,
-            "statusMessage": "dev-workflow: ready"
-          }
-        ]
-      }
-    ]
   }
 }

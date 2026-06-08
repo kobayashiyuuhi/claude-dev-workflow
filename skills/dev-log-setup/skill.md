@@ -34,7 +34,7 @@ mkdir -p ".claude/Log"
 スキルの `hooks/` ディレクトリからプロジェクトの `.claude/hooks/` へコピー。
 
 ```bash
-SKILL_DIR="$HOME/.claude/skills/dev-log-setup/hooks"
+SKILL_DIR="$CLAUDE_PLUGIN_ROOT/skills/dev-log-setup/hooks"
 HOOK_DIR=".claude/hooks"
 
 mkdir -p "$HOOK_DIR"
