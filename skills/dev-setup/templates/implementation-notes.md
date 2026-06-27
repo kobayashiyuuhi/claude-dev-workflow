@@ -1,6 +1,6 @@
 # implementation-notes
 
-仕様書（`requirements.md` / `spec.md` / `feature/*.md` / `tech-stack.md`）に**書かれていなかった**判断・変更・妥協・意思決定を**実装中に逐次記録**するログ。
+仕様書（`requirements.md` / `basic-design.md` / `detailed-design.md` / `feature/*.md` / `tech-stack.md`）に**書かれていなかった**判断・変更・妥協・意思決定を**実装中に逐次記録**するログ。
 
 ---
 
