@@ -189,11 +189,14 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 
 開発準備が整いました！
 
+ここまでで作成したのは **空の器（フォルダ・テンプレ・git・フック）だけ** です。
+中身を埋める作業は、ここから先のウォーターフォール各フェーズで行います。
+
 次のステップ：
 1. **PlanMode に切り替える**（または `/plan`）
 2. **モデルを Opus に変更する**（上流工程は最上位モデル推奨）
-3. ウォーターフォールの順序で進める：
-   1. **案件書ヒアリング** — `document/proposal.md` を確定（下記参照）
+3. ウォーターフォールの順序で中身を埋めていく：
+   1. **案件書** — `document/proposal.md` を確定（最初の作業。下記参照）
    2. **要件定義** — `document/requirements.md` を確定
    3. **基本設計** — `document/basic-design.md` + `document/diagrams/`（architecture・ER図）
    4. **詳細設計** — `document/detailed-design.md` + `document/diagrams/`（クラス図・シーケンス図）
@@ -203,19 +206,9 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 各フェーズ完了時にユーザー（お客様）の承認を得てから次フェーズへ進む。
 実装フェーズに入ったらモデルを Sonnet に戻してよい。
 
-#### 案件書ヒアリング（dev-setup 直後に実施）
-
-`document/proposal.md` は空テンプレのまま放置せず、Claude がユーザー（お客様）へ
-以下を順に質問して埋める：
-
-1. **何を作るのか**
-2. **目的・背景**
-3. **ターゲット層**
-4. **予算**
-5. **目標売上**
-6. **制約条件**（技術・法規制・予算上）
-7. **成功指標（KPI）**
-
-回答を `document/proposal.md` に転記し、内容をユーザーに確認してもらってから要件定義へ進む。
+> **最初にやること: 案件書（`document/proposal.md`）を埋める**
+> dev-setup はここで完了です。続けて案件書を作る場合は、ユーザー（お客様）へ
+> 以下の項目をヒアリングして `document/proposal.md` に転記してください：
+> 何を作るか / 目的・背景 / ターゲット層 / 予算 / 目標売上 / 制約条件 / 成功指標(KPI)
 
 ---
