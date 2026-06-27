@@ -1,7 +1,7 @@
 ---
 name: dev-setup
 description: >
-  開発環境セットアップスキル。新規プロジェクトのフォルダ構成・ドキュメントテンプレート・git・GitHubリポジトリ・PR自動レビュー・タスク更新フックを一括セットアップする。
+  開発環境セットアップスキル。新規プロジェクトのフォルダ構成・ドキュメントテンプレート・git・GitHubリポジトリ・タスク更新フックを一括セットアップする。
   /dev-setup と呼び出されたとき、または「開発準備」「プロジェクト初期化」「セットアップ」と言われたときに使う。
 ---
 
@@ -35,10 +35,12 @@ RULES="$CLAUDE_PLUGIN_ROOT/rules"
 mkdir -p .claude/rules
 cp "$RULES/development.md" .claude/rules/development.md
 
-# ドキュメント
+# ドキュメント（ウォーターフォール: 案件書→要件定義→基本設計→詳細設計）
+cp "$TMPL/proposal.md"           ./document/proposal.md
 cp "$TMPL/requirements.md"        ./document/requirements.md
 cp "$TMPL/overview.md"            ./document/overview.md
-cp "$TMPL/spec.md"                ./document/spec.md
+cp "$TMPL/basic-design.md"       ./document/basic-design.md
+cp "$TMPL/detailed-design.md"    ./document/detailed-design.md
 cp "$TMPL/tech-stack.md"          ./document/tech-stack.md
 cp "$TMPL/implementation-notes.md" ./document/implementation-notes.md
 cp "$TMPL/feature-template.md"    ./document/feature/README.md
@@ -144,51 +146,7 @@ gh api -X PUT "repos/{owner}/{repo}/branches/main/protection" \
   -F restrictions=null
 ```
 
-### ステップ6: PR自動レビューワークフローの設定
-
-GitHubリポジトリ作成済みの場合、`.github/workflows/pr-review.yml` を作成：
-
-```yaml
-name: Claude PR Auto Review
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-jobs:
-  auto-review:
-    runs-on: ubuntu-latest
-    if: "!startsWith(github.head_ref, 'fix/auto-review-')"
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          claude_args: "--max-turns 25"
-          prompt: |
-            PR #${{ github.event.pull_request.number }} の自動レビューを実施してください。
-```
-
-ユーザーに案内：
-```
-PR自動レビュー有効化手順:
-1. claude setup-token でOAuthトークン取得
-2. リポジトリ → Settings → Secrets → CLAUDE_CODE_OAUTH_TOKEN に登録
-```
-
-リポジトリ未作成の場合はスキップ。
-
-### ステップ7: タスク更新強制フックのセットアップ
+### ステップ6: タスク更新強制フックのセットアップ
 
 プロジェクトの `.claude/` にタスク更新を強制する Stop フックを配置する：
 
@@ -214,18 +172,18 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 - `shell` 指定なし、または bash.exe を直接コマンド文字列にダブルクォートで埋め込む形式は `cannot execute binary file` エラーになる
 - JSON 出力: `{"systemMessage": "メッセージ"}` または `{"continue": true, "stopReason": "理由"}`
 
-### ステップ7b: 検証機構（Stopフック）のセットアップ
+### ステップ6b: 検証機構（Stopフック）のセットアップ
 
 技術スタック確定済みなら `/verify-setup` を実行。未定なら仕様確定後・実装開始前に実行。
 
-### ステップ7c: セッションログ基盤のセットアップ
+### ステップ6c: セッションログ基盤のセットアップ
 
 `dev-log-setup` スキルを実行して、セッションログの自動保存基盤を整備する。
 
 - `stop_save_log.sh` / `log_generator.py` をプロジェクトの `.claude/hooks/` に配置
 - プロジェクトの `.claude/settings.json` の `Stop` フックに登録（未登録の場合）
 
-### ステップ8: 完了メッセージ
+### ステップ7: 完了メッセージ
 
 ---
 
@@ -233,13 +191,31 @@ cp "$TMPL/project-settings.json" .claude/settings.json
 
 次のステップ：
 1. **PlanMode に切り替える**（または `/plan`）
-2. **モデルを claude-opus-4-7 に変更する**
-3. 以下の順序で進める：
-   1. **要件定義** — `document/requirements.md` を確定
-   2. **機能検証 (PoC)** — 重要機能の実現可能性を実コードで確認
-   3. **仕様書作成** — `document/spec.md` `document/feature/*.md`
-   4. **設計・図表** — `document/diagrams/`
+2. **モデルを Opus に変更する**（上流工程は最上位モデル推奨）
+3. ウォーターフォールの順序で進める：
+   1. **案件書ヒアリング** — `document/proposal.md` を確定（下記参照）
+   2. **要件定義** — `document/requirements.md` を確定
+   3. **基本設計** — `document/basic-design.md` + `document/diagrams/`（architecture・ER図）
+   4. **詳細設計** — `document/detailed-design.md` + `document/diagrams/`（クラス図・シーケンス図）
+   5. **開発** — `src/`
+   6. **テスト** — `tests/`
 
-実装フェーズに入ったらモデルを claude-sonnet-4-6 に戻す。
+各フェーズ完了時にユーザー（お客様）の承認を得てから次フェーズへ進む。
+実装フェーズに入ったらモデルを Sonnet に戻してよい。
+
+#### 案件書ヒアリング（dev-setup 直後に実施）
+
+`document/proposal.md` は空テンプレのまま放置せず、Claude がユーザー（お客様）へ
+以下を順に質問して埋める：
+
+1. **何を作るのか**
+2. **目的・背景**
+3. **ターゲット層**
+4. **予算**
+5. **目標売上**
+6. **制約条件**（技術・法規制・予算上）
+7. **成功指標（KPI）**
+
+回答を `document/proposal.md` に転記し、内容をユーザーに確認してもらってから要件定義へ進む。
 
 ---

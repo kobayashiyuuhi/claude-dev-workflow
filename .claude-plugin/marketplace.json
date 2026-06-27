@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "dev-workflow",
-      "description": "/dev-setup と /verify-setup で開発環境を一括セットアップ。git・GitHub・PR自動レビュー・タスクフックまで。",
+      "description": "/dev-setup と /verify-setup で開発環境を一括セットアップ。git・GitHub・タスクフックまで。",
       "source": "./",
       "category": "productivity"
     }
