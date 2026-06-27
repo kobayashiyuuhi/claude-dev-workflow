@@ -1,6 +1,6 @@
 {
   "name": "dev-workflow",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Claude Code 開発ワークフロープラグイン。/dev-setup・/verify-setup で新規プロジェクトを一括セットアップする。/plan-view でPlanModeのプランをHTML出力してブラウザ確認できる。/dev-log-setup でセッションログ自動保存を設定、/dev-log で前回ログを読み込む。",
   "author": {
     "name": "kobayashiyuuhi",
